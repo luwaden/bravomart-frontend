@@ -1,0 +1,129 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: theme('colors.paper.DEFAULT');
+    color: theme('colors.ink.DEFAULT');
+    margin: 0;
+    font-family: theme('fontFamily.sans');
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: theme('fontFamily.display');
+    letter-spacing: -0.01em;
+  }
+
+  /* Visible keyboard focus everywhere, instead of the browser default or none. */
+  :focus-visible {
+    outline: 2px solid theme('colors.moss.DEFAULT');
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/*
+ * Shared component primitives — the single source of truth for buttons,
+ * inputs, cards, badges, etc. so pages compose these classes instead of
+ * re-declaring the same utility strings (per the DRY requirement in the
+ * design brief). Page-level code should reach for these first before
+ * writing new one-off utility combinations.
+ */
+@layer components {
+  /* --- Buttons --- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded font-medium text-sm px-4 py-2.5 transition-colors duration-150 disabled:opacity-50 disabled:pointer-events-none cursor-pointer;
+  }
+  .btn-primary {
+    @apply btn bg-moss text-white hover:bg-moss-700 active:bg-moss-800;
+  }
+  .btn-secondary {
+    @apply btn bg-paper text-ink border border-line-strong hover:border-ink hover:bg-paper-mist;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-ink-soft hover:bg-paper-mist hover:text-ink;
+  }
+  .btn-danger {
+    @apply btn bg-clay text-white hover:bg-clay-600;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .btn-lg {
+    @apply px-6 py-3.5 text-base;
+  }
+
+  /* --- Inputs --- */
+  .field-label {
+    @apply block text-xs font-medium text-ink-soft mb-1.5;
+  }
+  .input {
+    @apply w-full rounded border border-line-strong bg-paper px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-faint transition-colors focus:outline-none focus:border-moss;
+  }
+  .input-error {
+    @apply border-clay focus:border-clay;
+  }
+
+  /* --- Cards & surfaces --- */
+  .card {
+    @apply bg-paper border border-line rounded-lg;
+  }
+  .card-interactive {
+    @apply card transition-all duration-150 hover:border-line-strong hover:-translate-y-0.5;
+  }
+
+  /* --- Badges / status seals --- */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-sm px-2 py-0.5 text-xs font-medium;
+  }
+  .badge-moss {
+    @apply badge bg-moss-50 text-moss-700;
+  }
+  .badge-gold {
+    @apply badge bg-gold-50 text-gold-700;
+  }
+  .badge-clay {
+    @apply badge bg-clay-50 text-clay-600;
+  }
+  .badge-neutral {
+    @apply badge bg-paper-sunk text-ink-soft;
+  }
+
+  /* --- Layout helpers --- */
+  .container-page {
+    @apply max-w-content mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .section-heading {
+    @apply font-display text-2xl sm:text-3xl text-ink;
+  }
+
+  /* --- Skeleton loaders --- */
+  .skeleton {
+    @apply relative overflow-hidden bg-paper-sunk;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: skeleton-sweep 1.4s ease-in-out infinite;
+  }
+  @keyframes skeleton-sweep {
+    100% { transform: translateX(100%); }
+  }
+}
